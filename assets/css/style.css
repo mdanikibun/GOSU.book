@@ -3,8 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-.opacity-0 { opacity: 0 !important; }
-.opacity-1 { opacity: 1 !important; }
+.opacity-00 { opacity: 0 !important; }
+.opacity-05 { opacity: .5 !important; }
+.opacity-10 { opacity: 1 !important; }
 body {
     overflow: hidden;
 }
@@ -16,12 +17,14 @@ body {
 }
 .star {
     position: relative;
+    animation: MoveUpDown 100s linear infinite;
     color: #222;
     opacity: 0;
     transition: all .5s linear;
 }
 .star::before {
     content: '\f005';
+    /* content: 'GOSU'; */
     font-family: fontAwesome;
 }
 .star.animate {
@@ -29,4 +32,12 @@ body {
     text-shadow: 0 0 5px #0f0,
     0 0 20px #0f0,
     0 0 50px #0f0;
+}
+@keyframes MoveUpDown {
+0%, 100% {
+    top: -100px;
+}
+50% {
+    top: 500px;
+}
 }
