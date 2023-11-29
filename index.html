@@ -22,7 +22,7 @@
                 stars.style.filter = `hue-rotate(${i * 50}deg)`;
                 document.querySelector('.sec').appendChild(stars);
                 setTimeout(() => {
-                    stars.classList.add('opacity-05');
+                    stars.classList.add('opacity-10');
                 }, 250);
             }
         }
@@ -35,7 +35,7 @@
         setInterval(animateStars, 50);
         setInterval(() => {
             document.querySelectorAll('.star').forEach((e) => {
-                e.classList.remove('opacity-05');
+                e.classList.remove('opacity-10');
                 e.classList.add('old-star');
             });
             setTimeout(() => {

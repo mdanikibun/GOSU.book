@@ -17,7 +17,7 @@ body {
 }
 .star {
     position: relative;
-    animation: MoveUpDown 100s linear infinite;
+    animation: MoveUpDown 150s linear infinite;
     color: #222;
     opacity: 0;
     transition: all .5s linear;
