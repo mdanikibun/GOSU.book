@@ -2,11 +2,11 @@
 
 function updateDepth(book, newPage) {
 
-	var page = book.turn('page'),
+	let page = book.turn('page'),
 		pages = book.turn('pages'),
-		depthWidth = 16*Math.min(1, page*2/pages);
+		depthWidth = 16 * Math.min(1, page * 2 / pages);
 
-		newPage = newPage || page;
+	newPage = newPage || page;
 
 	if (newPage>3)
 		$('.sj-book .p2 .depth').css({
@@ -30,7 +30,7 @@ function updateDepth(book, newPage) {
 
 function loadPage(page) {
 
-	$.ajax({url: 'pages/page' + page + '.html'}).
+	$.ajax({url: '../pages/page' + page + '.html'}).
 		done(function(pageHtml) {
 			$('.sj-book .p' + page).html(pageHtml.replace('samples/steve-jobs/', ''));
 		});
@@ -39,15 +39,15 @@ function loadPage(page) {
 
 function addPage(page, book) {
 
-	var id, pages = book.turn('pages');
+	let id, pages = book.turn('pages');
 
 	if (!book.turn('hasPage', page)) {
 
-		var element = $('<div />',
-			{'class': 'own-size',
+		const element = $('<div />',
+			{
+				'class': 'own-size',
 				css: {width: 460, height: 582}
-			}).
-			html('<div class="loader"></div>');
+			}).html('<div class="loader"></div>');
 
 		if (book.turn('addPage', element, page)) {
 			loadPage(page);
@@ -80,35 +80,32 @@ function zoomHandle(e) {
 
 function zoomThis(pic) {
 
-	var	position, translate,
+	let position, translate,
 		tmpContainer = $('<div />', {'class': 'zoom-pic'}),
 		transitionEnd = $.cssTransitionEnd(),
 		tmpPic = $('<img />'),
-		zCenterX = $('#book-zoom').width()/2,
-		zCenterY = $('#book-zoom').height()/2,
+		zCenterX = $('#book-zoom').width() / 2,
+		zCenterY = $('#book-zoom').height() / 2,
 		bookPos = $('#book-zoom').offset(),
 		picPos = {
 			left: pic.offset().left - bookPos.left,
 			top: pic.offset().top - bookPos.top
 		},
-		completeTransition = function() {
+		completeTransition = function () {
 			$('#book-zoom').unbind(transitionEnd);
 
 			if ($('.sj-book').data().zoomIn) {
 				tmpContainer.appendTo($('body'));
 
 				$('body').css({'overflow': 'hidden'});
-				
+
 				tmpPic.css({
-					margin: position.top + 'px ' + position.left+'px'
-				}).
-				appendTo(tmpContainer).
-				fadeOut(0).
-				fadeIn(500);
+					margin: position.top + 'px ' + position.left + 'px'
+				}).appendTo(tmpContainer).fadeOut(0).fadeIn(500);
 			}
 		};
 
-		$('.sj-book').data().zoomIn = true;
+	$('.sj-book').data().zoomIn = true;
 
 		$('.sj-book').turn('disable', true);
 
@@ -117,12 +114,12 @@ function zoomThis(pic) {
 		tmpContainer.click(zoomOut);
 
 		tmpPic.load(function() {
-			var realWidth = $(this)[0].width,
+			const realWidth = $(this)[0].width,
 				realHeight = $(this)[0].height,
-				zoomFactor = realWidth/pic.width(),
+				zoomFactor = realWidth / pic.width(),
 				picPosition = {
-					top:  (picPos.top - zCenterY)*zoomFactor + zCenterY + bookPos.top,
-					left: (picPos.left - zCenterX)*zoomFactor + zCenterX + bookPos.left
+					top: (picPos.top - zCenterY) * zoomFactor + zCenterY + bookPos.top,
+					left: (picPos.left - zCenterX) * zoomFactor + zCenterX + bookPos.left
 				};
 
 
@@ -157,8 +154,8 @@ function zoomThis(pic) {
 
 function zoomOut() {
 
-	var transitionEnd = $.cssTransitionEnd(),
-		completeTransition = function(e) {
+	const transitionEnd = $.cssTransitionEnd(),
+		completeTransition = function (e) {
 			$('#book-zoom').unbind(transitionEnd);
 			$('.sj-book').turn('disable', false);
 			$('body').css({'overflow': 'auto'});
@@ -191,19 +188,19 @@ function moveBar(yes) {
 
 function setPreview(view) {
 
-	var previewWidth = 115,
+	const previewWidth = 115,
 		previewHeight = 73,
-		previewSrc = 'pages/preview.jpg',
+		previewSrc = 'assets/js/libs/turnjs4/pages/preview.jpg',
 		preview = $(_thumbPreview.children(':first')),
-		numPages = (view==1 || view==$('#slider').slider('option', 'max')) ? 1 : 2,
-		width = (numPages==1) ? previewWidth/2 : previewWidth;
+		numPages = (view === 1 || view === $('#book-slider').slider('option', 'max')) ? 1 : 2,
+		width = (numPages === 1) ? previewWidth / 2 : previewWidth;
 
 	_thumbPreview.
 		addClass('no-transition').
 		css({width: width + 15,
 			height: previewHeight + 15,
 			top: -previewHeight - 30,
-			left: ($($('#slider').children(':first')).width() - width - 15)/2
+			left: ($($('#book-slider').children(':first')).width() - width - 15)/2
 		});
 
 	preview.css({
@@ -212,7 +209,7 @@ function setPreview(view) {
 	});
 
 	if (preview.css('background-image')==='' ||
-		preview.css('background-image')=='none') {
+		preview.css('background-image')==='none') {
 
 		preview.css({backgroundImage: 'url(' + previewSrc + ')'});
 
@@ -232,6 +229,6 @@ function isChrome() {
 	// Chrome's unsolved bug
 	// http://code.google.com/p/chromium/issues/detail?id=128488
 
-	return navigator.userAgent.indexOf('Chrome')!=-1;
+	return navigator.userAgent.indexOf('Chrome')!==-1;
 
 }

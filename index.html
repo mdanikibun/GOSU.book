@@ -6,43 +6,38 @@
     <title>Star Background</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <script type="text/javascript" src="assets/js/libs/turnjs4/extras/jquery.min.1.7.js"></script>
+    <script type="text/javascript" src="assets/js/libs/turnjs4/extras/jquery-ui-1.8.20.custom.min.js"></script>
+    <script type="text/javascript" src="assets/js/libs/turnjs4/extras/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="assets/js/libs/turnjs4/extras/modernizr.2.5.3.min.js"></script>
+    <script type="text/javascript" src="assets/js/libs/turnjs4/lib/hash.js"></script>
 </head>
 <body>
-    <section class="sec"></section>
-    <script>
-        spawnStars();
-        function spawnStars() {
-            for (let i = 1; i <= 50; i++) {
-                let stars = document.createElement('div');
-                stars.classList.add('star');
-                let size = Math.random() * 20;
-                stars.style.fontSize = 10 + size + 'px';
-                stars.style.left = Math.random() * + innerWidth + 'px';
-                stars.style.top = Math.random() * + innerHeight + 'px';
-                stars.style.filter = `hue-rotate(${i * 50}deg)`;
-                document.querySelector('.sec').appendChild(stars);
-                setTimeout(() => {
-                    stars.classList.add('opacity-10');
-                }, 250);
-            }
-        }
+<section id="sec-main-bg"></section>
+<div id="book-canvas">
+    <div id="book-zoom">
+        <div class="sj-book">
+            <div depth="5" class="hard">
+                <div class="side"></div>
+            </div>
+            <div depth="5" class="hard front-side">
+                <div class="depth"></div>
+            </div>
+            <div class="own-size"></div>
+            <div class="own-size even"></div>
+            <div class="hard fixed back-side p111">
+                <div class="depth"></div>
+            </div>
+            <div class="hard p112"></div>
+        </div>
+    </div>
+    <div id="book-slider-bar" class="turnjs-slider">
+        <div id="book-slider"></div>
+    </div>
+</div>
 
-        function animateStars() {
-            let allStars = document.querySelectorAll('.star');
-            let num = Math.floor(Math.random() * allStars.length);
-            allStars[num].classList.toggle('animate');
-        }
-        setInterval(animateStars, 50);
-        setInterval(() => {
-            document.querySelectorAll('.star').forEach((e) => {
-                e.classList.remove('opacity-10');
-                e.classList.add('old-star');
-            });
-            setTimeout(() => {
-                spawnStars();
-                document.querySelectorAll('.old-star').forEach(e => e.remove());
-            }, 500);
-        }, 20000);
-    </script>
+<script type="application/javascript" src="assets/js/background.js"></script>
+<script type="application/javascript" src="assets/js/book.js"></script>
 </body>
 </html>
