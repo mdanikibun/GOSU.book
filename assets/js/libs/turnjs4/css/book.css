@@ -1,10 +1,10 @@
-/* Steve jobs' book */
+/* book */
 
 @font-face {
   font-family: 'Stempel-Garamond-W01-Roman';
   font-style: normal;
   font-weight: normal;
-  src: url('../fonts/Stempel-Garamond-W01-Roman.woff') format('woff');
+  /*src: url('../fonts/Stempel-Garamond-W01-Roman.woff') format('woff');*/
 }
 
 body, ul, table, form{
@@ -25,8 +25,9 @@ body, ul, table, form{
 	width: 960px;
 	height: 600px;
 	position: absolute;
-	top: calc(40% / 2);
-	left: calc(50% / 2);
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	z-index: 99;
 }
 
@@ -167,9 +168,9 @@ body, ul, table, form{
 
 .sj-book .p1,
 .sj-book .p2,
-.sj-book .p3, 
-.sj-book .p111, 
-.sj-book .p112{
+.sj-book .p3,
+.sj-book .p15,
+.sj-book .p16{
 	background-color:white;
 	background-image:url(../pics/book-covers.jpg) !important;
 }
@@ -191,7 +192,7 @@ body, ul, table, form{
 	background-image:-ms-linear-gradient(left, #bbb, #ddd, #bbb);
 	background-image:-o-linear-gradient(left, #bbb, #ddd, #bbb);
 	background-image:linear-gradient(left, #bbb, #ddd, #bbb);
-	
+
 	-webkit-transform:rotateY(-90deg);
 	-moz-transform:rotateY(-90deg);
 	-o-transform:rotateY(-90deg);
@@ -238,11 +239,11 @@ body, ul, table, form{
 	background-position:-1920px 0 !important;
 }
 
-.sj-book .p111{
+.sj-book .p15{
 	background-position:-960px 0 !important;
 }
 
-.sj-book .p112{
+.sj-book .p16{
 	background-position:-1440px 0 !important;
 }
 
@@ -314,7 +315,11 @@ body, ul, table, form{
 	margin:80px auto;
 	color:#ccc;
 }
-
+.sj-book .table-contents video {
+	position: absolute;
+	width: 700px;
+	right: 25%;
+}
 .sj-book .table-contents li{
 	list-style:none;
 	line-height:25px;

@@ -1,6 +1,0 @@
-@media screen and (max-width: 1366px) {
-    #book-canvas {
-        top: calc(30%/2) !important;
-        left: calc(30%/2) !important;
-    }
-}

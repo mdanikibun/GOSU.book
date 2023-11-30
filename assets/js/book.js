@@ -133,7 +133,7 @@ function loadApp() {
         autoCenter: true,
         gradients: true,
         duration: 1000,
-        pages: 112,
+        pages: 14,
         when: {
             turning: function (e, page, view) {
 
@@ -172,9 +172,9 @@ function loadApp() {
                     $('.sj-book .p2').removeClass('fixed');
 
                 if (page < book.turn('pages'))
-                    $('.sj-book .p111').addClass('fixed');
+                    $('.sj-book .p15').addClass('fixed');
                 else
-                    $('.sj-book .p111').removeClass('fixed');
+                    $('.sj-book .p15').removeClass('fixed');
 
                 Hash.go('page/' + page).update();
 
@@ -227,7 +227,6 @@ function loadApp() {
             }
         }
     });
-
 
     $('#book-slider').slider('option', 'max', numberOfViews(flipBook));
 
