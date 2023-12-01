@@ -354,7 +354,7 @@ body, ul, table, form {
     border: 3px solid #ef620073;
 }
 
-#btnsVideo {
+#btnVideos {
     position: absolute;
     top: 50%;
     right: 440px;
@@ -362,7 +362,7 @@ body, ul, table, form {
     transition: all .5s linear;
 }
 
-#btnsVideo > .btn {
+#btnVideos > .btn {
     background: transparent;
     color: #ef6200;
     border: none;

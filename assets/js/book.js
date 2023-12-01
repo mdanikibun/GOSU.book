@@ -1,3 +1,20 @@
+const TURN_DURATION = 1000;
+const FULL_PAGE_TIMEOUT = 550;
+const pagesFull = [
+    4, 5, // welcome page
+    8, 9, // quest page
+    12, 13, // trip page
+    14, 15 // market page
+];
+const pagesHide = [4, 8, 12, 14];
+const pagesNames = [
+    {page: 7, name: 'THÔNG TIN'},
+    {page: 9, name: 'NHIỆM VỤ'},
+    {page: 11, name: 'TRANG BỊ'},
+    {page: 13, name: 'HÀNH TRÌNH'},
+    {page: 15, name: 'MARKET'},
+];
+
 function loadApp() {
 
     const flipBook = $('.sj-book');
@@ -11,74 +28,74 @@ function loadApp() {
 
     // Mousewheel
 
-    $('#book-zoom').mousewheel(function (event, delta, deltaX, deltaY) {
-
-        const data = $(this).data(),
-            step = 30,
-            flipBook = $('.sj-book'),
-            actualPos = $('#book-slider').slider('value') * step;
-
-        if (typeof (data.scrollX) === 'undefined') {
-            data.scrollX = actualPos;
-            data.scrollPage = flipBook.turn('page');
-        }
-
-        data.scrollX = Math.min($("#book-slider").slider('option', 'max') * step,
-            Math.max(0, data.scrollX + deltaX));
-
-        const actualView = Math.round(data.scrollX / step),
-            page = Math.min(flipBook.turn('pages'), Math.max(1, actualView * 2 - 2));
-
-        if ($.inArray(data.scrollPage, flipBook.turn('view', page)) === -1) {
-            data.scrollPage = page;
-            flipBook.turn('page', page);
-        }
-
-        if (data.scrollTimer)
-            clearInterval(data.scrollTimer);
-
-        data.scrollTimer = setTimeout(function () {
-            data.scrollX = undefined;
-            data.scrollPage = undefined;
-            data.scrollTimer = undefined;
-        }, 1000);
-
-    });
+    // $('#book-zoom').mousewheel(function (event, delta, deltaX, deltaY) {
+    //
+    //     const data = $(this).data(),
+    //         step = 30,
+    //         flipBook = $('.sj-book'),
+    //         actualPos = $('#book-slider').slider('value') * step;
+    //
+    //     if (typeof (data.scrollX) === 'undefined') {
+    //         data.scrollX = actualPos;
+    //         data.scrollPage = flipBook.turn('page');
+    //     }
+    //
+    //     data.scrollX = Math.min($("#book-slider").slider('option', 'max') * step,
+    //         Math.max(0, data.scrollX + deltaX));
+    //
+    //     const actualView = Math.round(data.scrollX / step),
+    //         page = Math.min(flipBook.turn('pages'), Math.max(1, actualView * 2 - 2));
+    //
+    //     if ($.inArray(data.scrollPage, flipBook.turn('view', page)) === -1) {
+    //         data.scrollPage = page;
+    //         flipBook.turn('page', page);
+    //     }
+    //
+    //     if (data.scrollTimer)
+    //         clearInterval(data.scrollTimer);
+    //
+    //     data.scrollTimer = setTimeout(function () {
+    //         data.scrollX = undefined;
+    //         data.scrollPage = undefined;
+    //         data.scrollTimer = undefined;
+    //     }, 1000);
+    //
+    // });
 
     // Slider
 
-    $("#book-slider").slider({
-        min: 1,
-        max: 100,
-
-        start: function (event, ui) {
-
-            if (!window._thumbPreview) {
-                _thumbPreview = $('<div />', {'class': 'thumbnail'}).html('<div></div>');
-                setPreview(ui.value);
-                _thumbPreview.appendTo($(ui.handle));
-            } else
-                setPreview(ui.value);
-
-            moveBar(false);
-
-        },
-
-        slide: function (event, ui) {
-
-            setPreview(ui.value);
-
-        },
-
-        stop: function () {
-
-            if (window._thumbPreview)
-                _thumbPreview.removeClass('show');
-
-            $('.sj-book').turn('page', Math.max(1, $(this).slider('value') * 2 - 2));
-
-        }
-    });
+    // $("#book-slider").slider({
+    //     min: 1,
+    //     max: 100,
+    //
+    //     start: function (event, ui) {
+    //
+    //         if (!window._thumbPreview) {
+    //             _thumbPreview = $('<div />', {'class': 'thumbnail'}).html('<div></div>');
+    //             setPreview(ui.value);
+    //             _thumbPreview.appendTo($(ui.handle));
+    //         } else
+    //             setPreview(ui.value);
+    //
+    //         moveBar(false);
+    //
+    //     },
+    //
+    //     slide: function (event, ui) {
+    //
+    //         setPreview(ui.value);
+    //
+    //     },
+    //
+    //     stop: function () {
+    //
+    //         if (window._thumbPreview)
+    //             _thumbPreview.removeClass('show');
+    //
+    //         $('.sj-book').turn('page', Math.max(1, $(this).slider('value') * 2 - 2));
+    //
+    //     }
+    // });
 
 
     // URIs
@@ -132,7 +149,7 @@ function loadApp() {
         acceleration: !isChrome(),
         autoCenter: true,
         gradients: true,
-        duration: 1000,
+        duration: TURN_DURATION,
         pages: 16,
         when: {
             turning: function (e, page, view) {
@@ -228,7 +245,7 @@ function loadApp() {
         }
     });
 
-    $('#book-slider').slider('option', 'max', numberOfViews(flipBook));
+    // $('#book-slider').slider('option', 'max', numberOfViews(flipBook));
 
     flipBook.addClass('animated');
 
@@ -240,10 +257,8 @@ function loadApp() {
     // disable peel effects
 
     // flipBook.bind('start',
-    //     function (event, pageObject, corner)
-    //     {
-    //         if (corner === 'tl' || corner === 'tr' || corner === 'bl' || corner === 'br')
-    //         {
+    //     function (event, pageObject, corner) {
+    //         if (['tl', 'tr', 'bl', 'br'].includes(corner)) {
     //             event.preventDefault();
     //         }
     //     }
@@ -263,21 +278,21 @@ $('#book-canvas').css({visibility: 'hidden'});
 yepnope({
     test: Modernizr.csstransforms,
     yep: ['./assets/js/libs/turnjs4/lib/turn.min.js'],
-    nope: ['./assets/js/libs/turnjs4/lib/turn.html4.min.js', './assets/js/libs/turnjs4/css/jquery.ui.html4.css', './assets/js/libs/turnjs4/css/book-html4.css'],
-    both: ['./assets/js/libs/turnjs4/js/book.js', './assets/js/libs/turnjs4/css/jquery.ui.css', './assets/js/libs/turnjs4/css/book.css'],
+    nope: [
+        './assets/js/libs/turnjs4/lib/turn.html4.min.js',
+        './assets/js/libs/turnjs4/css/jquery.ui.html4.css',
+        './assets/js/libs/turnjs4/css/book-html4.css'
+    ],
+    both: [
+        './assets/js/libs/turnjs4/js/book.js',
+        './assets/js/libs/turnjs4/css/jquery.ui.css',
+        './assets/js/libs/turnjs4/css/book.css'
+    ],
     complete: loadApp
 });
 
 // set full for pages
 function setFullPage(page) {
-    const pagesFull = [
-        4, 5, // welcome page
-        8, 9, // quest page
-        12, 13, // trip page
-        14, 15 // market page
-    ];
-
-    const pagesHide = [4, 8, 12, 14];
 
     let pageHide = 0;
     if (pagesFull.includes(page)) {
@@ -288,15 +303,14 @@ function setFullPage(page) {
         }
     }
 
+    const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
     if (pageHide > 0) {
-        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
         pagesWrapper.forEach((e) => {
             e.classList.remove('overflow_unset_all');
         });
         const pageWrapper = document.querySelector(`.page-wrapper[page="${pageHide + 1}"]`);
         if (![5, 4].includes(pageHide)) {
-            document.getElementById('videoWelcome')?.classList.remove('opacity-10');
-            document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+            disableFullPage();
         }
         setTimeout(() => {
             pageWrapper?.classList.add('z-index-19');
@@ -304,36 +318,21 @@ function setFullPage(page) {
             setTimeout(() => {
                 if ([5, 4].includes(pageHide)) {
                     document.getElementById('videoWelcome')?.classList.add('opacity-10');
-                    document.getElementById('btnsVideo')?.classList.add('opacity-10');
+                    document.getElementById('btnVideos')?.classList.add('opacity-10');
                 } else {
-                    document.getElementById('videoWelcome')?.classList.remove('opacity-10');
-                    document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+                    disableFullPage();
                 }
-            }, 550);
-        }, 550);
+            }, FULL_PAGE_TIMEOUT);
+        }, FULL_PAGE_TIMEOUT);
     } else {
-        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
-        pagesWrapper.forEach((e) => {
-            e.classList.remove('overflow_unset_all');
-            e.classList.remove('z-index-19');
-        });
-        document.getElementById('videoWelcome')?.classList.remove('opacity-10');
-        document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+        disableFullPage();
     }
 }
 
 function addBookmark() {
     const sjBook = document.querySelector(".sj-book");
 
-    const pagesNames = [
-        {page: 7 , name: 'THÔNG TIN'},
-        {page: 9 , name: 'NHIỆM VỤ'},
-        {page: 11 , name: 'TRANG BỊ'},
-        {page: 13 , name: 'HÀNH TRÌNH'},
-        {page: 15 , name: 'MARKET'},
-    ];
-
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < pagesNames.length; i++) {
         const a = document.createElement("a");
         a.classList.add(`bookmark`);
         a.classList.add(`mark${i + 1}`);
@@ -350,14 +349,36 @@ function goToPage(self, page) {
         e.classList.remove('active');
     });
     self.classList.add('active');
-
     setTimeout(() => {
-        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
-        pagesWrapper.forEach((e) => {
-            e.classList.remove('overflow_unset_all');
-            e.classList.remove('z-index-19');
-        });
-        document.getElementById('videoWelcome')?.classList.remove('opacity-10');
-        document.getElementById('btnsVideo')?.classList.remove('opacity-10');
-    }, 550);
+        disableFullPage();
+    }, FULL_PAGE_TIMEOUT);
+
+}
+
+function disableFullPage() {
+
+    const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
+    pagesWrapper.forEach((e) => {
+        e.classList.remove('overflow_unset_all');
+        e.classList.remove('z-index-19');
+    });
+    document.getElementById('videoWelcome')?.classList.remove('opacity-10');
+    document.getElementById('btnVideos')?.classList.remove('opacity-10');
+
+}
+
+setInterval(checkMouseHolding, 10);
+
+function checkMouseHolding() {
+    const ownSizeItems = document.querySelectorAll(`.own-size.page`);
+    ownSizeItems.forEach((e) => {
+        const styleTransformText = e.style.transform;
+        const parts = styleTransformText.split(" ");
+        let degree = parts[0].match(/\d+/g);
+        degree = degree?.length > 0 ? parseInt(degree[0]) : 0;
+        if (degree > 45 && degree < 90) {
+            disableFullPage();
+            console.log(degree,'mouse holding');
+        }
+    });
 }
