@@ -103,24 +103,24 @@ function loadApp() {
 
     // Arrows
 
-    $(document).keydown(function (e) {
-
-        const previous = 37, next = 39;
-
-        switch (e.keyCode) {
-            case previous:
-
-                $('.sj-book').turn('previous');
-
-                break;
-            case next:
-
-                $('.sj-book').turn('next');
-
-                break;
-        }
-
-    });
+    // $(document).keydown(function (e) {
+    //
+    //     const previous = 37, next = 39;
+    //
+    //     switch (e.keyCode) {
+    //         case previous:
+    //
+    //             $('.sj-book').turn('previous');
+    //
+    //             break;
+    //         case next:
+    //
+    //             $('.sj-book').turn('next');
+    //
+    //             break;
+    //     }
+    //
+    // });
 
 
     // Flip Book
@@ -133,9 +133,10 @@ function loadApp() {
         autoCenter: true,
         gradients: true,
         duration: 1000,
-        pages: 14,
+        pages: 16,
         when: {
             turning: function (e, page, view) {
+                setFullPage(page);
 
                 const book = $(this),
                     currentPage = book.turn('page'),
@@ -172,16 +173,15 @@ function loadApp() {
                     $('.sj-book .p2').removeClass('fixed');
 
                 if (page < book.turn('pages'))
-                    $('.sj-book .p15').addClass('fixed');
+                    $('.sj-book .p17').addClass('fixed');
                 else
-                    $('.sj-book .p15').removeClass('fixed');
+                    $('.sj-book .p17').removeClass('fixed');
 
                 Hash.go('page/' + page).update();
 
             },
 
             turned: function (e, page, view) {
-
                 const book = $(this);
 
                 if (page === 2 || page === 3) {
@@ -235,6 +235,23 @@ function loadApp() {
     // Show canvas
 
     $('#book-canvas').css({visibility: ''});
+
+
+    // disable peel effects
+
+    // flipBook.bind('start',
+    //     function (event, pageObject, corner)
+    //     {
+    //         if (corner === 'tl' || corner === 'tr' || corner === 'bl' || corner === 'br')
+    //         {
+    //             event.preventDefault();
+    //         }
+    //     }
+    // );
+
+    setTimeout(() => {
+        addBookmark();
+    }, 20);
 }
 
 // Hide canvas
@@ -250,3 +267,97 @@ yepnope({
     both: ['./assets/js/libs/turnjs4/js/book.js', './assets/js/libs/turnjs4/css/jquery.ui.css', './assets/js/libs/turnjs4/css/book.css'],
     complete: loadApp
 });
+
+// set full for pages
+function setFullPage(page) {
+    const pagesFull = [
+        4, 5, // welcome page
+        8, 9, // quest page
+        12, 13, // trip page
+        14, 15 // market page
+    ];
+
+    const pagesHide = [4, 8, 12, 14];
+
+    let pageHide = 0;
+    if (pagesFull.includes(page)) {
+        if (pagesHide.includes(page)) {
+            pageHide = page;
+        } else if (pagesHide.includes(page - 1)) {
+            pageHide = page - 1;
+        }
+    }
+
+    if (pageHide > 0) {
+        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
+        pagesWrapper.forEach((e) => {
+            e.classList.remove('overflow_unset_all');
+        });
+        const pageWrapper = document.querySelector(`.page-wrapper[page="${pageHide + 1}"]`);
+        if (![5, 4].includes(pageHide)) {
+            document.getElementById('videoWelcome')?.classList.remove('opacity-10');
+            document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+        }
+        setTimeout(() => {
+            pageWrapper?.classList.add('z-index-19');
+            pageWrapper?.classList.add('overflow_unset_all');
+            setTimeout(() => {
+                if ([5, 4].includes(pageHide)) {
+                    document.getElementById('videoWelcome')?.classList.add('opacity-10');
+                    document.getElementById('btnsVideo')?.classList.add('opacity-10');
+                } else {
+                    document.getElementById('videoWelcome')?.classList.remove('opacity-10');
+                    document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+                }
+            }, 550);
+        }, 550);
+    } else {
+        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
+        pagesWrapper.forEach((e) => {
+            e.classList.remove('overflow_unset_all');
+            e.classList.remove('z-index-19');
+        });
+        document.getElementById('videoWelcome')?.classList.remove('opacity-10');
+        document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+    }
+}
+
+function addBookmark() {
+    const sjBook = document.querySelector(".sj-book");
+
+    const pagesNames = [
+        {page: 7 , name: 'THÔNG TIN'},
+        {page: 9 , name: 'NHIỆM VỤ'},
+        {page: 11 , name: 'TRANG BỊ'},
+        {page: 13 , name: 'HÀNH TRÌNH'},
+        {page: 15 , name: 'MARKET'},
+    ];
+
+    for (let i = 0; i < 5; i++) {
+        const a = document.createElement("a");
+        a.classList.add(`bookmark`);
+        a.classList.add(`mark${i + 1}`);
+        a.textContent = pagesNames[i].name;
+        a.setAttribute('onclick', `goToPage(this, ${pagesNames[i].page})`)
+        sjBook.appendChild(a);
+    }
+}
+
+function goToPage(self, page) {
+    $('.sj-book').turn('page', page);
+    const bookmarks = document.querySelectorAll(`.bookmark`);
+    bookmarks.forEach((e) => {
+        e.classList.remove('active');
+    });
+    self.classList.add('active');
+
+    setTimeout(() => {
+        const pagesWrapper = document.querySelectorAll(`.page-wrapper`);
+        pagesWrapper.forEach((e) => {
+            e.classList.remove('overflow_unset_all');
+            e.classList.remove('z-index-19');
+        });
+        document.getElementById('videoWelcome')?.classList.remove('opacity-10');
+        document.getElementById('btnsVideo')?.classList.remove('opacity-10');
+    }, 550);
+}

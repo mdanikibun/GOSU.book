@@ -1,5 +1,41 @@
 <div class="table-contents">
-	<video controls loop>
+	<video id="videoWelcome">
 		<source src="../assets/videos/welcome_video.mp4">
 	</video>
+	<div id="btnsVideo">
+		<button class="btn btn_play opacity-05" onclick="videoPlay()">
+			<i class="fa-solid fa-circle-play"></i>
+		</button>
+		<button class="btn btn_pause opacity-01 d-none" onclick="videoPause()">
+			<i class="fa-solid fa-circle-pause"></i>
+		</button>
+	</div>
 </div>
+<script>
+	function videoPlay() {
+		document.getElementById('videoWelcome').play();
+		document.querySelector('.btn_play').classList.add('d-none');
+		document.querySelector('.btn_pause').classList.remove('d-none');
+	}
+	function videoPause() {
+		document.getElementById('videoWelcome').pause();
+		document.querySelector('.btn_pause').classList.add('d-none');
+		document.querySelector('.btn_play').classList.remove('d-none');
+	}
+
+	videoBtnsHover();
+	function videoBtnsHover() {
+		document.querySelector('.btn_play').addEventListener('mouseover', () => {
+			document.querySelector('.btn_play').classList.remove('opacity-05');
+		});
+		document.querySelector('.btn_play').addEventListener('mouseout', () => {
+			document.querySelector('.btn_play').classList.add('opacity-05');
+		});
+		document.querySelector('.btn_pause').addEventListener('mouseover', () => {
+			document.querySelector('.btn_pause').classList.remove('opacity-01');
+		});
+		document.querySelector('.btn_pause').addEventListener('mouseout', () => {
+			document.querySelector('.btn_pause').classList.add('opacity-01');
+		});
+	}
+</script>

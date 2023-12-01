@@ -9,12 +9,28 @@
     opacity: 0 !important;
 }
 
+.opacity-01 {
+    opacity: .1 !important;
+}
+
+.opacity-02 {
+    opacity: .2 !important;
+}
+
 .opacity-05 {
     opacity: .5 !important;
 }
 
 .opacity-10 {
     opacity: 1 !important;
+}
+
+.z-index-19 {
+    z-index: 19 !important;
+}
+
+.d-none {
+    display: none !important;
 }
 
 body {
