@@ -309,14 +309,14 @@ function setFullPage(page) {
             e.classList.remove('overflow_unset_all');
         });
         const pageWrapper = document.querySelector(`.page-wrapper[page="${pageHide + 1}"]`);
-        if (![5, 4].includes(pageHide)) {
+        if (!pagesFull.includes(pageHide)) {
             disableFullPage();
         }
         setTimeout(() => {
             pageWrapper?.classList.add('z-index-19');
             pageWrapper?.classList.add('overflow_unset_all');
             setTimeout(() => {
-                if ([5, 4].includes(pageHide)) {
+                if (pagesFull.includes(pageHide)) {
                     document.getElementById('videoWelcome')?.classList.add('opacity-10');
                     document.getElementById('btnVideos')?.classList.add('opacity-10');
                 } else {
